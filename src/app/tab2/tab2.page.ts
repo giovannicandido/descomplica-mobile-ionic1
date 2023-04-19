@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { IonicModule, ToastController, ViewDidEnter, ViewDidLeave } from '@ionic/angular';
+import { IonicModule, ModalController, ToastController, ViewDidEnter, ViewDidLeave } from '@ionic/angular';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import { Pessoa } from '../model/pessoa';
 import { PessoaService } from '../service/pessoa.service';
@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Subscription, distinctUntilChanged, debounceTime } from 'rxjs';
+import { FormPessoa } from '../components/form-pessoa';
 
 @Component({
   selector: 'app-tab2',
@@ -27,7 +28,9 @@ export class Tab2Page implements ViewDidEnter, OnInit, OnDestroy {
     private pessoaService: PessoaService, 
     private router: Router,
     private toastController: ToastController,
-    private fb: FormBuilder) {}
+    private fb: FormBuilder,
+    private modalCtrl: ModalController
+    ) {}
   
   
   
@@ -82,6 +85,19 @@ export class Tab2Page implements ViewDidEnter, OnInit, OnDestroy {
       });
   
       await toast.present();
+    }
+  }
+
+  async criarNovo() {
+    const modal = await this.modalCtrl.create({
+      component: FormPessoa,
+      componentProps: {modal: true}
+    });
+    await modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if(role === 'close') {
+      this.listar()
     }
   }
 

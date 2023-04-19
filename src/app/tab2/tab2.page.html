@@ -13,7 +13,7 @@
       <ion-searchbar animated="true" placeholder="Pesquisar pelo nome" formControlName="nome"></ion-searchbar>
     </ion-item>
   </form>
-  
+  <ion-button expand="block" (click)="criarNovo()">Criar novo</ion-button>
   <ion-list>
     <ion-item *ngFor="let pessoa of pessoas">
       <ion-label>{{pessoa.nome}} - {{pessoa.email}} ({{pessoa.telefone}})
